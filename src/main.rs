@@ -6,6 +6,8 @@ use clap::App;
 use csv::Writer;
 use serde::Deserialize;
 use tzdata::Timezone;
+use itertools::Itertools;
+use float_ord::FloatOrd;
 
 #[derive(Deserialize, Debug)]
 struct StatsEntry {
@@ -26,6 +28,9 @@ fn main() {
         Some("single") => {
             single_day(data, NaiveDate::parse_from_str(args.value_of("day").unwrap(), "%Y-%m-%d").ok().unwrap())
         }
+        Some("overview") => {
+            overview(data)
+        }
         _ => {
             panic!()
         }
@@ -44,4 +49,23 @@ fn single_day(stats: &Vec<(f64, i64)>, day: NaiveDate) {
     }).for_each(|(value, time)| {
         csv.serialize((time.format("%H:%M"), *value)).ok();
     });
+}
+
+fn overview(stats: &Vec<(f64, i64)>) {
+    let timezone = Timezone::new("Europe/Berlin").unwrap();
+    let mut csv = Writer::from_writer(io::stdout());
+    csv.serialize(("day", "peak")).ok();
+    // yes, a simple graphite query could also get this result directly
+    let days = stats.into_iter().map(|(value, time)| {
+        (value, timezone.unix(*time, 0))
+    }).group_by(|(_, time)| {
+        time.format("%Y-%m-%d")
+    });
+    for (day, group) in &days {
+        if let Some((max, _)) = group.max_by_key(|(value, _)| { FloatOrd(**value) }) {
+            csv.serialize((day, max)).ok();
+        } else {
+            csv.serialize((day, -1));
+        }
+    }
 }

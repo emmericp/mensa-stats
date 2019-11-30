@@ -1,0 +1,34 @@
+\documentclass[class=minimal,border=0pt]{standalone}
+\usepackage{tumcolor}
+
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.13}
+\pgfplotsset{grid style={dotted}}
+\usetikzlibrary{plotmarks}
+\usepgfplotslibrary{dateplot}
+
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+	date coordinates in=x,
+	enlarge x limits=0.01,
+	ybar,
+	bar width=1.5mm,
+	grid=major,
+	width=20cm,
+	height=5cm,
+	ymin=0,
+	ylabel={People},
+	xlabel={Date},
+	date ZERO=2019-09-11, % docs says this is no longer required, but it is needed for xtick to work
+	xticklabel={\day.\month},
+	% , ..., does not work with dates and we want to mark every monday :(
+	xtick={2019-09-11, 2019-09-16, 2019-09-23,  2019-09-30, 2019-10-07, 2019-10-14, 2019-10-21, 2019-10-28, 2019-11-04, 2019-11-11, 2019-11-18, 2019-11-25, 2019-12-02},
+]
+\addplot[mark=none,color=TUMBlue,fill=TUMBlue,thick] table[col sep=comma, x=day, y=peak]{../overview.csv};
+\end{axis}
+\end{tikzpicture}
+
+\end{document}
