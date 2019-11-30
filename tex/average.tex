@@ -1,0 +1,73 @@
+\documentclass[class=minimal,border=0pt]{standalone}
+\usepackage{tumcolor}
+
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.13}
+\pgfplotsset{grid style={dotted}}
+\usetikzlibrary{plotmarks}
+
+% black magic, based on https://tex.stackexchange.com/questions/79252/pgfplots-data-time-format
+\def\removeleadingzeros#1{\if0#1 \expandafter\else#1\fi}
+\def\transformtime#1:#2!{
+	\pgfkeys{/pgf/fpu=true,/pgf/fpu/output format=fixed}
+	\pgfmathparse{\removeleadingzeros#1*3600-\pgfkeysvalueof{/pgfplots/timeplot zero}*3600+\removeleadingzeros#2*60}
+	\pgfkeys{/pgf/fpu=false}
+}
+\pgfplotsset{
+	timeplot zero/.initial=0,
+	timeplot/.style={
+		x coord trafo/.code={\expandafter\transformtime##1!},
+		x coord inv trafo/.code={%
+			\pgfkeys{/pgf/fpu=true,/pgf/fpu/output format=fixed}
+			\pgfmathsetmacro\hours{floor(##1/3600)+\pgfkeysvalueof{/pgfplots/timeplot zero}}
+			\pgfmathsetmacro\minutes{floor((##1-(\hours-\pgfkeysvalueof{/pgfplots/timeplot zero})*3600)/60)}
+			\def\pgfmathresult{\pgfmathparse{int(mod(\hours,60))}\pgfmathresult:\pgfmathparse{mod(\minutes,60)<10?"0":{},int(mod(\minutes,60))}\pgfmathresult}
+			\pgfkeys{/pgf/fpu=false}
+		 },
+		scaled x ticks=false,
+		xticklabel=\tick
+	}
+}
+\pgfplotsset{
+	discard if not symbolic/.style 2 args={
+		% suppress LOG messages about the filtered points
+		filter discard warning=false,
+		x filter/.append code={
+			\edef\tempa{\thisrow{#1}}
+			\edef\tempb{#2}
+			\ifx\tempa\tempb
+			\else
+				\def\pgfmathresult{NaN}
+			\fi
+		},
+	},
+}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+	timeplot, timeplot zero = 0,
+	enlarge x limits=0,
+	grid=major,
+	width=13.5cm,
+	height=5cm,
+	ymin=0,
+	ymax=1600,
+	xmin={10:30},
+	xmax={15:30},
+	xtick={11:00.1, 12:00, 13:00.1, 14:00, 15:00.1}, % apparently there's something wrong with rounding or floats in the coord trafo above
+	ylabel={People},
+	xlabel={Time},
+	legend entries = {Mondays, Tuesdays, Wednesdays, Thursdays, Fridays},
+	legend columns = {5}
+]
+\addplot+[mark=none,color=TUMBlue,thick,discard if not symbolic={weekday}{Monday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
+\addplot+[mark=none,color=TUMGreen,thick,discard if not symbolic={weekday}{Tuesday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
+\addplot+[mark=none,color=TUMRed,thick,discard if not symbolic={weekday}{Wednesday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
+\addplot+[mark=none,color=TUMBlack,thick,discard if not symbolic={weekday}{Thursday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
+\addplot+[mark=none,color=TUMYellow,thick,discard if not symbolic={weekday}{Friday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
+\end{axis}
+\end{tikzpicture}
+
+\end{document}
