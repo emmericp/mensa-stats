@@ -1,0 +1,54 @@
+\documentclass[class=minimal,border=0pt]{standalone}
+\usepackage{tumcolor}
+
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.13}
+\pgfplotsset{grid style={dotted}}
+\usetikzlibrary{plotmarks}
+
+% black magic, based on https://tex.stackexchange.com/questions/79252/pgfplots-data-time-format
+\def\removeleadingzeros#1{\if0#1 \expandafter\else#1\fi}
+\def\transformtime#1:#2!{
+	\pgfkeys{/pgf/fpu=true,/pgf/fpu/output format=fixed}
+	\pgfmathparse{\removeleadingzeros#1*3600-\pgfkeysvalueof{/pgfplots/timeplot zero}*3600+\removeleadingzeros#2*60}
+	\pgfkeys{/pgf/fpu=false}
+}
+\pgfplotsset{
+	timeplot zero/.initial=0,
+	timeplot/.style={
+		x coord trafo/.code={\expandafter\transformtime##1!},
+		x coord inv trafo/.code={%
+			\pgfkeys{/pgf/fpu=true,/pgf/fpu/output format=fixed}
+			\pgfmathsetmacro\hours{floor(##1/3600)+\pgfkeysvalueof{/pgfplots/timeplot zero}}
+			\pgfmathsetmacro\minutes{floor((##1-(\hours-\pgfkeysvalueof{/pgfplots/timeplot zero})*3600)/60)}
+			\def\pgfmathresult{\pgfmathparse{int(mod(\hours,60))}\pgfmathresult:\pgfmathparse{mod(\minutes,60)<10?"0":{},int(mod(\minutes,60))}\pgfmathresult}
+			\pgfkeys{/pgf/fpu=false}
+		 },
+		scaled x ticks=false,
+		xticklabel=\tick
+	}
+}
+
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+	timeplot, timeplot zero = 0,
+	enlarge x limits=0,
+	grid=major,
+	width=10cm,
+	height=5cm,
+	ymin=0,
+	xmin={10:30},
+	xmax={15:30},
+	xtick={11:00.1, 12:00, 13:00.1, 14:00, 15:00.1}, % apparently there's something wrong with rounding or floats in the coord trafo above
+	ylabel={People},
+	xlabel={Time},
+%	xticklabel style= {rotate=90, anchor=near xticklabel},
+]
+\addplot[mark=none,color=TUMBlue,thick] table[col sep=comma, x=timestamp, y=value]{../day.csv};
+\end{axis}
+\end{tikzpicture}
+
+\end{document}
