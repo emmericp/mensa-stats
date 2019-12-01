@@ -43,6 +43,12 @@ Traffic on the busiest day yet: Monday, November 18th, 2019.
 
 Pro-tipp: Re-download the stats with a custom `from` parameter if you want to render a day that is less than 4 weeks ago. This gives you data with 5 minute granularity.
 
+# What's happening before and after lunch?
+
+Also check out the off-peak hours (by modifying `xmin`/`ymax` or look at the CSV).
+The first shift of ~8 employees shows up at 6:00, followed by ~8 more people at 8:00. Almost all of them leave by 16:00.
+The most popular SSID is `eduroam` during Mensa opening hours, `LRZ` and `BayernWLAN` are most used before and after.
+
 
 # Wouldn't it be easier to just query Graphite?
 
