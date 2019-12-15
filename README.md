@@ -4,7 +4,6 @@
 
 Run [download-stats.sh](download-stats.sh) to download all stats since the grand opening on 9/11 2019.
 
-
 # How many people are there at peak hours?
 
 ```bash
@@ -42,6 +41,10 @@ pdflatex single-day.tex
 Traffic on the busiest day yet: Monday, November 18th, 2019.
 
 Pro-tipp: Re-download the stats with a custom `from` parameter if you want to render a day that is less than 4 weeks ago. This gives you data with 5 minute granularity.
+
+# Generating all the graphs
+
+We've got an awesome makefile, just run `make` to generate all the PDFs and PNGs. (Requires `curl`, `imagemagick`, and a LaTeX installation with `pdflatex` and `pgfplots`.)
 
 # What's happening before and after lunch?
 
