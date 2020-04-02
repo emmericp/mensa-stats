@@ -50,10 +50,10 @@
 	timeplot, timeplot zero = 0,
 	enlarge x limits=0,
 	grid=major,
-	width=20cm,
+	width=22cm,
 	height=7cm,
 	ymin=0,
-	ymax=1600,
+	ymax=1250,
 	xmin={10:30},
 	xmax={15:30},
 	xtick={11:00.1, 12:00, 13:00.1, 14:00, 15:00.1}, % apparently there's something wrong with rounding or floats in the coord trafo above
@@ -62,11 +62,11 @@
 	legend entries = {Mondays, Tuesdays, Wednesdays, Thursdays, Fridays},
 	legend columns = {5}
 ]
-\addplot+[mark=none,color=TUMBlue,thick,discard if not symbolic={weekday}{Monday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
-\addplot+[mark=none,color=TUMGreen,thick,discard if not symbolic={weekday}{Tuesday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
-\addplot+[mark=none,color=TUMRed,thick,discard if not symbolic={weekday}{Wednesday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
-\addplot+[mark=none,color=TUMBlack,thick,discard if not symbolic={weekday}{Thursday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
-\addplot+[mark=none,color=TUMYellow,thick,discard if not symbolic={weekday}{Friday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
+\addplot+[mark=none,color=TUMBlue,ultra thick,discard if not symbolic={weekday}{Monday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
+\addplot+[mark=none,color=TUMGreen,ultra thick,discard if not symbolic={weekday}{Tuesday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
+\addplot+[mark=none,color=TUMRed,ultra thick,discard if not symbolic={weekday}{Wednesday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
+\addplot+[mark=none,color=TUMBlack,ultra thick,discard if not symbolic={weekday}{Thursday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
+\addplot+[mark=none,color=TUMYellow,ultra thick,discard if not symbolic={weekday}{Friday}] table[col sep=comma, x=timestamp, y=value]{../average.csv};
 \end{axis}
 \end{tikzpicture}
 

@@ -37,7 +37,7 @@
 	timeplot, timeplot zero = 0,
 	enlarge x limits=0,
 	grid=major,
-	width=20cm,
+	width=22cm,
 	height=7cm,
 	ymin=0,
 	xmin={10:30},
@@ -47,7 +47,7 @@
 	xlabel={Time},
 %	xticklabel style= {rotate=90, anchor=near xticklabel},
 ]
-\addplot[mark=none,color=TUMBlue,thick] table[col sep=comma, x=timestamp, y=value]{../single-day.csv};
+\addplot[mark=none,color=TUMBlue,ultra thick] table[col sep=comma, x=timestamp, y=value]{../single-day.csv};
 \end{axis}
 \end{tikzpicture}
 

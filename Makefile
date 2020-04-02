@@ -16,7 +16,7 @@ average.csv: ap-stats.json
 	cargo run -- --mode average --ap-stats $< --since 2019-10-14 --until 2099-01-01 > $@
 
 single-day.csv: ap-stats.json
-	cargo run -- --mode single --ap-stats $< --day 2019-11-18 > $@
+	cargo run -- --mode single --ap-stats $< --day 2020-01-27 > $@
 
 clean:
 	rm -f ap-stats.json

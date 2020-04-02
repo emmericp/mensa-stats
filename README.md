@@ -31,14 +31,14 @@ Looks like 12:00 is the most popular time for lunch. The script filters days tha
 # Check out a specific day
 
 ```bash
-cargo run -- --mode single --ap-stats ap-stats.json --day 2019-11-18 > day.csv
+cargo run -- --mode single --ap-stats ap-stats.json --day 2020-01-27 > day.csv
 cd tex
 pdflatex single-day.tex
 ```
 
 ![Stats for 2019-11-18](img/single-day.png)
 
-Traffic on the busiest day yet: Monday, November 18th, 2019.
+Traffic on the busiest day yet: Monday, January 27th, 2020.
 
 Pro-tipp: Re-download the stats with a custom `from` parameter if you want to render a day that is less than 4 weeks ago. This gives you data with 5 minute granularity.
 
