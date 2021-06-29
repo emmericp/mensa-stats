@@ -31,7 +31,7 @@ Looks like 12:00 is the most popular time for lunch. The script filters days tha
 # Check out a specific day
 
 ```bash
-cargo run -- --mode single --ap-stats ap-stats.json --day 2020-01-27 > day.csv
+cargo run -- --mode single --ap-stats ap-stats.json --day 2020-01-27 > single-day.csv
 cd tex
 pdflatex single-day.tex
 ```
